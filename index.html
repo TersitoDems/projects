@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cebu Food Web | Verified Profiles</title>
+    <!-- Import Fredoka Font for that ultimate bubbly feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- BUBBLY BACKGROUND SYSTEM --- */
+        :root {
+            --bg-cream: #f4f1ea;
+            --dot-pink: #fbc2cb;
+            --heart-red: #e65c65;
+            --primary-pink: #ff477e;
+            --bubbly-purple: #7209b7;
+            --mint-green: #2ec4b6;
+            --text-dark: #333333;
+        }
+
+        * {
+            font-family: 'Fredoka', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-dark);
+            position: relative;
+            overflow-x: hidden;
+
+            background-color: var(--bg-cream);
+            background-image: radial-gradient(var(--dot-pink) 15%, transparent 16%);
+            background-size: 60px 60px;
+        }
+
+        .bg-heart {
+            position: fixed;
+            color: var(--heart-red);
+            font-size: 5rem;
+            opacity: 0.35;
+            user-select: none;
+            pointer-events: none;
+            font-weight: 300;
+            z-index: 0;
+        }
+        .h1 { top: 10%; left: 5%; transform: rotate(-15deg); }
+        .h2 { top: -5%; right: 15%; transform: rotate(20deg); }
+        .h3 { top: 45%; left: -2%; transform: rotate(-25deg); }
+        .h4 { bottom: 15%; right: 5%; transform: rotate(15deg); }
+        .h5 { bottom: -5%; left: 30%; transform: rotate(10deg); }
+
+        header {
+            text-align: center;
+            padding: 25px;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: #d64550;
+            margin: 0;
+            text-shadow: 3px 3px 0px white;
+        }
+
+        header p {
+            color: #6d0e22;
+            font-weight: 600;
+            margin: 5px 0 0 0;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 6px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 1rem;
+        }
+
+        .app-container {
+            width: 90%;
+            max-width: 420px;
+            margin: 10px auto 40px auto;
+            z-index: 10;
+        }
+
+        .bubble-card {
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 30px;
+            box-shadow: 0px 15px 35px rgba(214, 69, 80, 0.15);
+            border: 5px solid white;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .bubble-card h2 {
+            color: #d64550;
+            font-size: 1.8rem;
+            margin-top: 0;
+        }
+
+        /* --- INPUT FIELD SYSTEMS --- */
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #666;
+            padding-left: 12px;
+            font-size: 0.95rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 22px;
+            border-radius: 30px;
+            border: 3px solid #f0e6e8;
+            box-sizing: border-box;
+            font-size: 1rem;
+            outline: none;
+            background-color: #faf8f8;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-pink);
+            background-color: #fff;
+        }
+
+        .input-group input[type="file"] {
+            padding: 10px 20px;
+            background: #fff0f3;
+            border: 2px dashed var(--primary-pink);
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        .btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0px 6px 0px #c9184a;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0px 2px 0px #c9184a;
+        }
+
+        .links-container {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-size: 0.9rem;
+        }
+
+        .switch-auth-link {
+            color: var(--bubbly-purple);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .switch-auth-link:hover { text-decoration: underline; }
+
+        .hidden { display: none !important; }
+
+        /* --- DASHBOARD STYLING --- */
+        .welcome-badge {
+            background-color: #fff0f3;
+            color: var(--primary-pink);
+            padding: 10px 15px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+            text-align: center;
+        }
+
+        .user-verification-photos {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 10px 0 15px 0;
+        }
+
+        .user-mini-photo {
+            width: 75px;
+            height: 75px;
+            border-radius: 18px;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .profile-img-container {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 10px auto 20px auto;
+            border: 6px solid #ffccd5;
+            background: #fff0f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .favorite-food {
+            background: #ffe5ec; color: var(--primary-pink);
+            padding: 8px 18px; border-radius: 20px;
+            display: inline-block; font-weight: 700; font-size: 0.9rem; margin-bottom: 20px;
+        }
+
+        .bio { font-size: 1rem; color: #555; line-height: 1.5; margin-bottom: 30px; }
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn-follow { background: var(--mint-green); box-shadow: 0px 6px 0px #1b9aaa; }
+        .btn-follow:active { box-shadow: 0px 2px 0px #1b9aaa; }
+        .btn-slide { background: var(--bubbly-purple); box-shadow: 0px 6px 0px #4c0577; }
+        .btn-slide:active { box-shadow: 0px 2px 0px #4c0577; }
+
+        .logout-btn {
+            background: none; border: none; color: #888;
+            font-weight: 600; margin-top: 20px; cursor: pointer; font-size: 0.9rem;
+        }
+        .logout-btn:hover { color: #d64550; }
+
+        .slide-left { transform: translateX(-160%) rotate(-15deg); opacity: 0; }
+        .slide-right { transform: translateX(160%) rotate(15deg); opacity: 0; }
+    </style>
+</head>
+<body>
+
+<div class="bg-heart h1">♡</div><div class="bg-heart h2">♡</div>
+<div class="bg-heart h3">♡</div><div class="bg-heart h4">♡</div>
+<div class="bg-heart h5">♡</div>
+
+<header>
+    <h1>Cebu Food Web 💕✨</h1>
+    <p>Sign Up to have Fun!</p>
+</header>
+
+<div class="app-container">
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="login-screen" class="bubble-card">
+        <h2>Welcome Back! 💕</h2>
+        <form onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="login-phone" placeholder="e.g., 09171234567" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="login-pass" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn">Log In 🍕</button>
+        </form>
+        <div class="links-container">
+            <a class="switch-auth-link" onclick="showScreen('forgot')">Forgot Password?</a>
+            <a class="switch-auth-link" onclick="showScreen('signup')">Sign Up Free</a>
+        </div>
+    </div>
+
+    <!-- 2. REGISTRATION SCREEN -->
+    <div id="signup-screen" class="bubble-card hidden">
+        <h2>Join the Web! ✨</h2>
+        <form onsubmit="handleSignupRequest(event)">
+            <div class="input-group">
+                <label>Username / Name</label>
+                <input type="text" id="signup-user" placeholder="e.g., Kurt" required>
+            </div>
+            <div class="input-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="signup-phone" placeholder="e.g., 09171234567" required>
+            </div>
+            <div class="input-group">
+                <label>Create Password</label>
+                <input type="password" id="signup-pass" placeholder="••••••••" required>
+            </div>
+            <div class="input-group">
+                <label>Favorite ethnicities </label>
+                <input type="text" id="signup-food" placeholder="e.g., Latina, Moreno" required>
+            </div>
+            <div class="input-group">
+                <label>Upload Close-up Face Photo 📸</label>
+                <input type="file" id="signup-face" accept="image/*" required>
+            </div>
+            <div class="input-group">
+                <label>Upload Full Body Photo 💃</label>
+                <input type="file" id="signup-body" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn">Send Verification Code ✉️</button>
+        </form>
+        <div class="links-container" style="justify-content: center;">
+            <a class="switch-auth-link" onclick="showScreen('login')">Already have an account? Log In</a>
+        </div>
+    </div>
+
+    <!-- 3. SMS OTP VERIFICATION WINDOW -->
+    <div id="verify-screen" class="bubble-card hidden">
+        <h2>Verify Your Number 📱</h2>
+        <p style="font-size:0.95rem; color:#666;">We simulated sending a 4-digit security code to your phone number.</p>
+        <form onsubmit="confirmVerificationCode(event)">
+            <div class="input-group">
+                <label>Enter 4-Digit Code</label>
+                <input type="text" id="otp-input" maxlength="4" placeholder="1234" style="text-align:center; font-size:1.5rem; letter-spacing:8px;" required>
+            </div>
+            <button type="submit" class="btn">Verify & Enter Web 🎉</button>
+        </form>
+    </div>
+
+    <!-- 4. FORGOT PASSWORD / RECOVERY WINDOW -->
+    <div id="forgot-screen" class="bubble-card hidden">
+        <h2>Account Recovery 🔐</h2>
+        <div id="forgot-step-1">
+            <form onsubmit="handleForgotProgress(event)">
+                <div class="input-group">
+                    <label>Enter Registered Mobile Number</label>
+                    <input type="tel" id="forgot-phone" placeholder="e.g., 09171234567" required>
+                </div>
+                <button type="submit" class="btn">Verify Phone 💬</button>
+            </form>
+        </div>
+        <div id="forgot-step-2" class="hidden">
+            <form onsubmit="handlePasswordResetSave(event)">
+                <div class="input-group">
+                    <label>Enter Security Code Sent via SMS</label>
+                    <input type="text" id="forgot-otp" placeholder="••••" style="text-align:center;" required>
+                </div>
+                <div class="input-group">
+                    <label>Type New Password</label>
+                    <input type="password" id="forgot-new-pass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn">Update Password 💖</button>
+            </form>
+        </div>
+        <a class="switch-auth-link" onclick="showScreen('login')" style="margin-top:20px; display:inline-block;">Back to Login</a>
+    </div>
+
+    <!-- 5. MAIN DISCOVERY CARD SCREEN -->
+    <div id="app-screen" class="bubble-card hidden">
+        <div id="user-greeting" class="welcome-badge"></div>
+        <div id="user-uploaded-gallery" class="user-verification-photos"></div>
+        <div id="profile-card-content"></div>
+        <div class="action-buttons">
+            <button class="btn btn-follow" onclick="triggerCardAnimation('follow')">⭐ Follow</button>
+            <button class="btn btn-slide" onclick="triggerCardAnimation('slide')">💌 Slide</button>
+        </div>
+        <button class="logout-btn" onclick="logoutUser()">Log Out Account</button>
+    </div>
+
+</div>
+
+<script>
+    let database = [
+        {
+            phone: "09171234567",
+            username: "Kurt",
+            password: "123",
+            food: "Ginabot",
+            faceImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+            bodyImg: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=150"
+        }
+    ];
+
+    let temporarySessionUser = null;
+    let generatedSecurityOTP = null;
+    let activeLoggedUser = null;
+    let currentFeedIdx = 0;
+
+    const feedProfiles = [
+        { name: "Angel, 21", food: "Larsian BBQ & Puso", bio: "Looking for someone to do midnight food crawls around IT park with me. Extra spicy gravy is a must! 🍢", emoji: "🍕" },
+        { name: "Mark, 23", food: "Carcar Lechon Skin", bio: "Will literally give you all my crunchy lechon skin if you talk philosophy or tech with me. Let's coffee? ☕", emoji: "🍔" },
+        { name: "Chloe, 20", food: "Siomai sa Tisa", bio: "Incoming nursing student who survives entirely on 5-peso siomai and iced coffee. Slide in if you can study with me! 🩺", emoji: "🧋" }
+    ];
+
+    function showScreen(type) {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('signup-screen').classList.add('hidden');
+        document.getElementById('verify-screen').classList.add('hidden');
+        document.getElementById('forgot-screen').classList.add('hidden');
+        document.getElementById('app-screen').classList.add('hidden');
+        document.getElementById(type + '-screen').classList.remove('hidden');
+    }
+
+    function handleSignupRequest(event) {
+        event.preventDefault();
+
+        const userEl = document.getElementById('signup-user');
+        const phoneEl = document.getElementById('signup-phone');
+        const passEl = document.getElementById('signup-pass');
+        const foodEl = document.getElementById('signup-food');
+        const faceEl = document.getElementById('signup-face');
+        const bodyEl = document.getElementById('signup-body');
+
+        const phone = phoneEl.value.trim();
+        if (database.some(user => user.phone === phone)) {
+            alert("This phone number is already registered! ❌");
+            return;
+        }
+
+        const faceFile = faceEl.files[0];
+        const bodyFile = bodyEl.files[0];
+        if (!faceFile || !bodyFile) {
+            alert("Please select both your Close-up Face photo and Full Body photo to get verified! 📸");
+            return;
+        }
+
+        const faceUrl = URL.createObjectURL(faceFile);
+        const bodyUrl = URL.createObjectURL(bodyFile);
+
+        temporarySessionUser = {
+            username: userEl.value.trim(),
+            phone: phone,
+            password: passEl.value,
+            food: foodEl.value.trim(),
+            faceImg: faceUrl,
+            bodyImg: bodyUrl
+        };
+
+        generatedSecurityOTP = Math.floor(1000 + Math.random() * 9000).toString();
+        alert(`💬 CEBU FOOD WEB SMS:\n\nVerification code sent to ${phone} is: ${generatedSecurityOTP}`);
+        showScreen('verify');
+    }
+
+    function confirmVerificationCode(event) {
+        event.preventDefault();
+        const enteredOTP = document.getElementById('otp-input').value.trim();
+
+        if (enteredOTP === generatedSecurityOTP) {
+            database.push(temporarySessionUser);
+            activeLoggedUser = temporarySessionUser;
+            alert("Phone & Photos verified successfully! Welcome to Cebu Food Web! 🎉");
+            launchMainDashboard();
+            document.getElementById('otp-input').value = "";
+        } else {
+            alert("Incorrect code! Check the alert window text box again. ❌");
+        }
+    }
+
+    function handleForgotProgress(event) {
+        event.preventDefault();
+        const phone = document.getElementById('forgot-phone').value.trim();
+        const userAccount = database.find(u => u.phone === phone);
+
+        if (!userAccount) {
+            alert("That mobile number is not registered. 🔎");
+            return;
+        }
+
+        temporarySessionUser = userAccount;
+        generatedSecurityOTP = Math.floor(1000 + Math.random() * 9000).toString();
+        alert(`💬 PASSWORD RESET SMS:\n\nYour recovery code is: ${generatedSecurityOTP}`);
+
+        document.getElementById('forgot-step-1').classList.add('hidden');
+        document.getElementById('forgot-step-2').classList.remove('hidden');
+    }
+
+    function handlePasswordResetSave(event) {
+        event.preventDefault();
+        const inputOTP = document.getElementById('forgot-otp').value.trim();
+        const newPassword = document.getElementById('forgot-new-pass').value;
+
+        if (inputOTP === generatedSecurityOTP) {
+            temporarySessionUser.password = newPassword;
+            alert("Password changed successfully! 💖");
+
+            document.getElementById('forgot-step-2').classList.add('hidden');
+            document.getElementById('forgot-step-1').classList.remove('hidden');
+            document.getElementById('forgot-phone').value = "";
+            document.getElementById('forgot-otp').value = "";
+            document.getElementById('forgot-new-pass').value = "";
+            showScreen('login');
+        } else {
+            alert("Invalid code verification block failed. ❌");
+        }
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+        const phone = document.getElementById('login-phone').value.trim();
+        const pass = document.getElementById('login-pass').value;
+
+        const validatedProfile = database.find(u => u.phone === phone && u.password === pass);
+
+        if (validatedProfile) {
+            activeLoggedUser = validatedProfile;
+            launchMainDashboard();
+            document.getElementById('login-phone').value = "";
+            document.getElementById('login-pass').value = "";
+        } else {
+            alert("Invalid Phone Number or Password. 🔒");
+        }
+    }
+
+    function launchMainDashboard() {
+        document.getElementById('user-greeting').innerText = `👋 Verified: ${activeLoggedUser.username} | Craving: ${activeLoggedUser.food}`;
+        document.getElementById('user-uploaded-gallery').innerHTML = `
+                <img src="${activeLoggedUser.faceImg}" class="user-mini-photo" alt="Face Identification">
+                <img src="${activeLoggedUser.bodyImg}" class="user-mini-photo" alt="Body Identification">
+            `;
+        currentFeedIdx = 0;
+        document.querySelector('.action-buttons').style.display = 'grid';
+        showScreen('app');
+        renderFeedProfileCard();
+    }
+
+    function renderFeedProfileCard() {
+        const wrapper = document.getElementById('profile-card-content');
+        if (currentFeedIdx >= feedProfiles.length) {
+            wrapper.innerHTML = `<h3>End of the Line! 🎉</h3><p class="bio">You have checked out all Cebuano matches active today.</p>`;
+            document.querySelector('.action-buttons').style.display = 'none';
+            return;
+        }
+        const currentItem = feedProfiles[currentFeedIdx];
+        wrapper.innerHTML = `
+                <div class="profile-img-container">${currentItem.emoji}</div>
+                <h3>${currentItem.name}</h3>
+                <span class="favorite-food">❤️ Craves: ${currentItem.food}</span>
+                <p class="bio">"${currentItem.bio}"</p>
+            `;
+    }
+
+    function triggerCardAnimation(action) {
+        const cardElement = document.getElementById('app-screen');
+        cardElement.classList.add(action === 'follow' ? 'slide-left' : 'slide-right');
+
+        setTimeout(() => {
+            currentFeedIdx++;
+            renderFeedProfileCard();
+            cardElement.classList.remove('slide-left', 'slide-right');
+        }, 300);
+    }
+
+    function logoutUser() {
+        activeLoggedUser = null;
+        showScreen('login');
+    }
+</script>
+</body>
+</html>
