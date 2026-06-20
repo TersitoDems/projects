@@ -143,6 +143,39 @@
             border-radius: 20px;
         }
 
+        /* --- BUBBLY CHECKBOX SYSTEMS --- */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 18px;
+            text-align: left;
+            padding: 0 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            accent-color: var(--primary-pink);
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 2px;
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            color: #555555;
+            cursor: pointer;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        .checkbox-group label strong {
+            color: #d64550;
+            font-weight: 600;
+        }
+
         .btn {
             background: var(--primary-pink);
             color: white;
@@ -253,8 +286,8 @@
 <div class="bg-heart h5">♡</div>
 
 <header>
-    <h1>Cebu Food Web 💕✨</h1>
-    <p>Sign Up to have Fun!</p>
+    <h1>Cebu Food Web 🍔✨</h1>
+    <p>Bubbly, Verified Foodie Matches</p>
 </header>
 
 <div class="app-container">
@@ -296,8 +329,8 @@
                 <input type="password" id="signup-pass" placeholder="••••••••" required>
             </div>
             <div class="input-group">
-                <label>Favorite ethnicities </label>
-                <input type="text" id="signup-food" placeholder="e.g., Latina, Moreno" required>
+                <label>Favorite Cebuano Food</label>
+                <input type="text" id="signup-food" placeholder="e.g., Carcar Lechon" required>
             </div>
             <div class="input-group">
                 <label>Upload Close-up Face Photo 📸</label>
@@ -307,6 +340,17 @@
                 <label>Upload Full Body Photo 💃</label>
                 <input type="file" id="signup-body" accept="image/*" required>
             </div>
+
+            <!-- BUBBLY COMPLIANCE CHECKBOXES -->
+            <div class="checkbox-group">
+                <input type="checkbox" id="signup-age" required>
+                <label for="signup-age">I confirm that I am <strong>18 years old or older</strong>. 🔞</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="signup-privacy" required>
+                <label for="signup-privacy">I agree to the <strong>Data Privacy & User Consent</strong> terms. My uploaded photos will safely be used strictly for match identification layout features. 🔒🛡️</label>
+            </div>
+
             <button type="submit" class="btn">Send Verification Code ✉️</button>
         </form>
         <div class="links-container" style="justify-content: center;">
@@ -410,6 +454,14 @@
         const foodEl = document.getElementById('signup-food');
         const faceEl = document.getElementById('signup-face');
         const bodyEl = document.getElementById('signup-body');
+        const ageCheck = document.getElementById('signup-age').checked;
+        const privacyCheck = document.getElementById('signup-privacy').checked;
+
+        // Extra JavaScript validation shield
+        if (!ageCheck || !privacyCheck) {
+            alert("You must confirm you are 18+ and accept the Data Privacy policy to sign up! 🛑");
+            return;
+        }
 
         const phone = phoneEl.value.trim();
         if (database.some(user => user.phone === phone)) {
@@ -451,6 +503,10 @@
             alert("Phone & Photos verified successfully! Welcome to Cebu Food Web! 🎉");
             launchMainDashboard();
             document.getElementById('otp-input').value = "";
+
+            // Clear the checkboxes for safety next time card resets
+            document.getElementById('signup-age').checked = false;
+            document.getElementById('signup-privacy').checked = false;
         } else {
             alert("Incorrect code! Check the alert window text box again. ❌");
         }
